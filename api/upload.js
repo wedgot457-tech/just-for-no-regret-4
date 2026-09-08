@@ -1,42 +1,123 @@
 import { put } from '@vercel/blob';
 
-export const config = { api: { bodyParser: false } };
+export const config = {
+  api: {
+    bodyParser: false
+  }
+};
 
-export default async function handler(request) {
+export default async function handler(request, response) {
   if (request.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { 'content-type': 'application/json' }
+    return response.status(405).json({
+      error: 'Method not allowed'
     });
   }
 
   try {
-    const form = await request.formData();
-    const file = form.get('file');
-    const kind = String(form.get('kind') || 'media');
+    // IMPORTANT:
+    // This endpoint receives multipart/form-data.
+    // The old request.formData() approach does not work
+    // with this Vercel Node-style function.
 
-    if (!(file instanceof File)) {
-      return Response.json({ error: 'No file supplied' }, { status: 400 });
+    const contentType = request.headers['content-type'] || '';
+
+    if (!contentType.includes('multipart/form-data')) {
+      return response.status(400).json({
+        error: 'Expected multipart/form-data upload'
+      });
     }
 
-    const maxBytes = kind === 'background-video' ? 4 * 1024 * 1024 : 3 * 1024 * 1024;
-    if (file.size > maxBytes) {
-      return Response.json({
-        error: `File is too large. Maximum is ${Math.round(maxBytes / 1024 / 1024)} MB.`
-      }, { status: 413 });
-    }
+    // This version needs a multipart parser because
+    // Vercel's Node-style request does not provide request.formData().
+    const Busboy = (await import('busboy')).default;
 
-    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '-').slice(-80) || 'upload';
-    const blob = await put(`letters/media/${crypto.randomUUID()}-${safeName}`, file, {
-      access: 'public',
-      addRandomSuffix: false,
-      contentType: file.type || 'application/octet-stream',
-      cacheControlMaxAge: 31536000
+    const bb = Busboy({
+      headers: request.headers
     });
 
-    return Response.json({ url: blob.url, pathname: blob.pathname, contentType: blob.contentType });
+    let fileBuffer = null;
+    let fileName = 'upload';
+    let fileType = 'application/octet-stream';
+    let kind = 'media';
+
+    bb.on('field', (name, value) => {
+      if (name === 'kind') {
+        kind = String(value || 'media');
+      }
+    });
+
+    bb.on('file', (name, file, info) => {
+      fileName = info.filename || 'upload';
+      fileType = info.mimeType || 'application/octet-stream';
+
+      const chunks = [];
+
+      file.on('data', (chunk) => {
+        chunks.push(chunk);
+      });
+
+      file.on('end', () => {
+        fileBuffer = Buffer.concat(chunks);
+      });
+    });
+
+    bb.on('error', (error) => {
+      throw error;
+    });
+
+    await new Promise((resolve, reject) => {
+      bb.on('finish', resolve);
+      bb.on('error', reject);
+      request.on('error', reject);
+      request.pipe(bb);
+    });
+
+    if (!fileBuffer) {
+      return response.status(400).json({
+        error: 'No file supplied'
+      });
+    }
+
+    const maxBytes =
+      kind === 'background-video'
+        ? 4 * 1024 * 1024
+        : 3 * 1024 * 1024;
+
+    if (fileBuffer.length > maxBytes) {
+      return response.status(413).json({
+        error:
+          `File is too large. Maximum is ` +
+          `${Math.round(maxBytes / 1024 / 1024)} MB.`
+      });
+    }
+
+    const safeName =
+      fileName
+        .replace(/[^a-zA-Z0-9._-]/g, '-')
+        .slice(-80) || 'upload';
+
+    const blob = await put(
+      `letters/media/${crypto.randomUUID()}-${safeName}`,
+      fileBuffer,
+      {
+        access: 'public',
+        addRandomSuffix: false,
+        contentType: fileType,
+        cacheControlMaxAge: 31536000
+      }
+    );
+
+    return response.status(200).json({
+      url: blob.url,
+      pathname: blob.pathname,
+      contentType: blob.contentType
+    });
+
   } catch (error) {
-    console.error(error);
-    return Response.json({ error: 'Upload failed. Make sure a Vercel Blob store is connected.' }, { status: 500 });
+    console.error('Upload error:', error);
+
+    return response.status(500).json({
+      error: error?.message || 'Upload failed'
+    });
   }
 }
