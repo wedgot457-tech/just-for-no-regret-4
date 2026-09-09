@@ -1,0 +1,17 @@
+{
+  "name": "letter-replica-vercel",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.3.0",
+    "busboy": "^1.6.0"
+  },
+  "devDependencies": {
+    "vercel": "latest"
+  },
+  "type": "module"
+}
