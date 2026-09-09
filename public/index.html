@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Just For No Regret</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div id="bg"></div><div id="youtubeBg" aria-hidden="true"></div><div id="shade"></div><div id="vignette"></div><div id="particles"></div>
+<button id="soundToggle" class="soundToggle" type="button">♪ SOUND</button>
+<header class="nav"><div class="brand"><i></i><span id="brand">JUST FOR NO REGRET</span></div><div class="navBtns"><button id="presetBtn">Presets</button><button id="previewBtn">Preview</button><button id="customBtn">Customize</button><button class="pink" id="shareBtn">Share</button></div></header>
+<main class="hero"><div class="heroText"><div class="eyebrow" id="heroEyebrow">FROM ~MANAS</div><h1 id="heroTitle">A thought from me</h1><p id="heroSubtitle">I made this website just for you, to be honest, not entirely on my own
+but with the help of AI.</p><button class="open" id="open">OPEN LETTER</button></div></main>
+<footer><span id="footerLeft">MADE FOR ONE VERY SPECIAL PERSON</span><span>— SCROLL TO DISCOVER</span><button id="footerRight">↻ RESET</button></footer>
+
+<div class="letterOverlay" id="letterOverlay"><article class="letter" id="letter"><button class="x" id="letterClose" aria-label="Close">×</button><div class="letterEyebrow" id="letterEyebrow">I KNOW THESE FONTS ARE NOT GOOD</div><h2 id="letterTitle">Sorry To Bother.</h2><div class="letterBody" id="letterBody">There are some things that are hard to say out loud.
+
+So I decided to write them here...
+But still I didn't write everything.
+
+I know this is a bad thing to say, but I still like you and haven't liked anyone else in my life. I just wanted you to know. I always admired and respected you. It is true that I cannot say all of this in front of you or express this feeling; I thought if I talked to you about it, you would become frustrated, so I thought this would be better. I am simply an introvert. Sorry if this offends or frustrates you, but I love you.</div><div class="sigrow"><div class="sig" id="signature">~MANAS</div><img class="letterPhoto" id="letterPhotoImg" alt=""></div><div class="rule"><span></span><b>♥</b><span></span></div><div class="question" id="question">Will you be mine?</div><div class="choices"><button class="yes" id="yes">YES <span>♥</span></button><button id="no">NO <span>( &gt; ᴗ &lt; )</span></button><button class="moment" id="moment">I NEED A MOMENT</button></div></article></div>
+
+<div class="scene" id="scene"><div id="sceneFX"></div><div class="sceneCard"><button class="x" id="sceneClose" aria-label="Close">×</button><img id="sceneImg" alt=""><div class="sceneEyebrow" id="sceneEyebrow">A LITTLE MOMENT</div><h2 id="sceneTitle">You said yes.</h2><p id="sceneText">And somehow the whole night feels a little brighter.</p><button class="open secondary" id="back">BACK TO LETTER</button></div></div>
+
+<div class="presetShade" id="presetShade"></div><div class="presetPanel" id="presetPanel"><div class="presetHead"><div><small>PRESETS</small><h2>Choose a mood</h2></div><button class="x" id="presetClose" aria-label="Close">×</button></div><p class="presetIntro">Change the visual language without touching your words or photos.</p><div class="presetGrid" id="presetGrid"></div></div>
+
+<div class="drawerShade" id="drawerShade"></div><aside class="drawer" id="drawer"><div class="drawerTop"><div><small>CUSTOMIZE</small><h2>Your letter</h2></div><button class="x" id="drawerClose" aria-label="Close">×</button></div><div class="drawerActions"><button id="reset">Reset</button><button id="save">Save</button><button class="pink" id="drawerShare">Share</button></div>
+<section><h3>01 / FRONT</h3><label>EYEBROW<input id="fEyebrow"></label><label>TITLE<textarea id="fTitle"></textarea></label><label>SUBTITLE<textarea id="fSubtitle"></textarea></label><label>CTA LABEL<input id="fCTA"></label><label>FOOTER META<input id="fFooter"></label></section>
+<section><h3>02 / LETTER</h3><label>EYEBROW<input id="lEyebrow"></label><label>GREETING<input id="lTitle"></label><label>BODY<textarea id="lBody"></textarea></label><label>SIGNATURE<input id="lSig"></label><label>QUESTION<input id="lQuestion"></label></section>
+<section><h3>03 / RESPONSES</h3><label>YES TITLE<input id="yTitle"></label><label>YES TEXT<textarea id="yText"></textarea></label><label>NO TITLE<input id="nTitle"></label><label>NO TEXT<textarea id="nText"></textarea></label><label>MOMENT TITLE<input id="mTitle"></label><label>MOMENT TEXT<textarea id="mText"></textarea></label></section>
+<section><h3>04 / STYLE</h3><label>FONT<select id="font"><option value="Cormorant Garamond">Cormorant Garamond</option><option value="Georgia">Georgia</option><option value="Times New Roman">Times New Roman</option><option value="DM Mono">DM Mono</option></select></label><div class="colors"><label>ACCENT<input type="color" id="accent"></label><label>TEXT<input type="color" id="text"></label><label>LETTER<input type="color" id="paper"></label><label>INK<input type="color" id="ink"></label><label>SURFACE<input type="color" id="surface"></label><label>BUTTON<input type="color" id="button"></label></div><div class="styleGrid"><label>CORNER ROUNDING<input type="range" id="radius" min="8" max="28"></label><label>GLOW<input type="range" id="glow" min="0" max="1" step=".01"></label></div></section>
+<section><h3>05 / BACKGROUND</h3><label>IMAGE / VIDEO<input type="file" id="bgFile" accept="video/mp4,video/webm,video/ogg,image/*"></label><label>YOUTUBE URL<input id="yt" placeholder="https://youtube.com/watch?v=..."></label><button class="ytApply" id="ytApply" type="button">USE YOUTUBE BACKGROUND</button><p class="ytHint">Uploaded videos can play their original audio after the visitor interacts with the page. YouTube audio follows browser autoplay rules.</p><label>OVERLAY<input type="range" id="overlay" min="0" max=".8" step=".01"></label><label>BRIGHTNESS<input type="range" id="bright" min=".3" max="1.4" step=".05"></label></section>
+<section><h3>06 / PHOTOS</h3><label>LETTER PHOTO<input type="file" id="letterPhoto" accept="image/*"></label><label>YES PHOTO<input type="file" id="yesPhoto" accept="image/*"></label><label>NO PHOTO<input type="file" id="noPhoto" accept="image/*"></label><label>MOMENT PHOTO<input type="file" id="momentPhoto" accept="image/*"></label></section>
+<p class="note">Save keeps your current text and style on this device. Share uploads selected media to Vercel Blob and stores the finished configuration in a public share record.</p></aside>
+
+<div class="shareShade" id="shareModalShade"></div><div class="shareModal" id="shareModal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle"><button class="x" id="shareModalClose" aria-label="Close">×</button><div class="shareKicker">SHARE READY</div><h2 id="shareModalTitle">Your letter is ready.</h2><p>Use the link below to open the finished viewer on another device.</p><div class="shareField"><input id="shareUrl" readonly><button id="copyShare">Copy</button></div><div class="shareActions"><button id="nativeShare">Share</button><button id="openShare">Open</button></div></div>
+<div class="toast" id="toast"></div><script src="/app.js"></script></body></html>
