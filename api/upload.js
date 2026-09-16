@@ -47,6 +47,6 @@ export default async function handler(request, response) {
     return response.status(200).json(result);
   } catch (error) {
     console.error('Blob client upload error:', error);
-    return response.status(400).json({ error:error?.message||'Could not prepare Blob upload.' });
+    return response.status(500).json({ error:error?.message||'Could not prepare Blob upload.' });
   }
 }
